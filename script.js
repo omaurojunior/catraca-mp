@@ -339,9 +339,7 @@ async function verificarCPF() {
 
     const resposta = await fetch(`${CONFIG.API_BASE_URL}${CONFIG.ENDPOINT_CPF}/${cpfDigits}`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      mode: 'cors',
       signal: controller.signal
     });
 
