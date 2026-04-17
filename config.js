@@ -13,7 +13,7 @@ const CONFIG = {
   // 📡 ENDPOINTS
   // Em algumas implementações, o prefixo '/api' é necessário (ex: '/api/alunos/cpf')
   // Verifique qual retorno sua API Vercel está dando.
-  ENDPOINT_CPF: '/api/alunos/cpf', 
+  ENDPOINT_CPF: '/alunos/cpf', 
 
   // ⏱️ TEMPO DE EXIBIÇÃO DO RESULTADO (ms)
   TEMPO_RESULTADO: 5000, 

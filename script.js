@@ -364,6 +364,11 @@ async function verificarCPF() {
       let aluno = await resposta.json();
       logDebug('Dados brutos salvos', aluno);
 
+      // Se a API retorna uma lista, pegar o primeiro item
+      if (Array.isArray(aluno) && aluno.length > 0) {
+        aluno = aluno[0];
+      }
+
       // Tratamento para API que retorna { status: 'success', dados: { ... } }
       if (aluno && aluno.dados) {
         logDebug('Unwrapping', 'Extraindo dados de aluno.dados');
