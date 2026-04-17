@@ -322,7 +322,14 @@ async function verificarCPF() {
   }
 
   isProcessing = true;
-  
+
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+    logDebug('Offline', 'Dispositivo sem conexão à internet');
+    mostrarResultado('erro', { mensagem: 'Sem conexão. Verifique sua internet.' });
+    isProcessing = false;
+    return;
+  }
+
   // Show loading state
   const btnText = btnVerify.querySelector('.btn-verify-text');
   const btnLoading = btnVerify.querySelector('.btn-verify-loading');
@@ -411,14 +418,18 @@ async function verificarCPF() {
     console.error('Erro ao consultar API:', erro);
     logDebug('Exception', erro.message);
     
+    const errorMessage = erro.name === 'AbortError'
+      ? 'Tempo de conexão esgotado. Tente novamente.'
+      : erro.message || 'Erro de rede. Verifique a conexão.';
+
     // Check if it's a network error or timeout
     if (erro.name === 'AbortError') {
       logDebug('Timeout', 'Requisição cancelada por timeout');
-    } else if (erro.message.includes('fetch')) {
+    } else if (typeof erro.message === 'string' && erro.message.toLowerCase().includes('fetch')) {
       logDebug('Network Error', 'Erro de rede ou servidor indisponível');
     }
     
-    mostrarResultado('erro');
+    mostrarResultado('erro', { mensagem: errorMessage });
   } finally {
     // Ensure processing flag is reset
     isProcessing = false;
@@ -469,6 +480,9 @@ function mostrarResultado(tipo, aluno = null) {
       break;
 
     case 'erro':
+      document.getElementById('resultDetailErro').textContent = aluno && aluno.mensagem
+        ? aluno.mensagem
+        : 'Não foi possível conectar ao servidor';
       resultCards.erro.classList.remove('hidden');
       screenResult.className = 'screen active';
       break;
