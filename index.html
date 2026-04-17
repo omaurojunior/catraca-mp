@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>M&P Performance - Controle de Acesso</title>
+    <meta name="description" content="Sistema de controle de acesso da academia M&P Performance">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+        <div class="bg-grid"></div>
+    </div>
+
+    <!-- ===== TELA PRINCIPAL: ENTRADA CPF ===== -->
+    <div id="screenCPF" class="screen active">
+        <div class="container">
+
+            <!-- Header com Logo -->
+            <header class="header" id="mainHeader">
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <span class="logo-m">M</span>
+                        <span class="logo-amp">&</span>
+                        <span class="logo-p">P</span>
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-title">M&P</span>
+                        <span class="logo-subtitle">PERFORMANCE</span>
+                    </div>
+                </div>
+                <div class="header-line"></div>
+                <div class="header-info">
+                    <div class="clock" id="clock">
+                        <i class="fas fa-clock"></i>
+                        <span id="clockTime">00:00</span>
+                    </div>
+                    <div class="date" id="date">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span id="dateText">01/01/2026</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CPF Input Area -->
+            <main class="cpf-section">
+                <div class="cpf-card">
+                    <div class="cpf-card-header">
+                        <div class="cpf-icon-wrapper">
+                            <i class="fas fa-fingerprint"></i>
+                        </div>
+                        <h1 id="cpfTitle">Identificação</h1>
+                        <p id="cpfSubtitle">Digite seu CPF para acessar a academia</p>
+                    </div>
+
+                    <div class="cpf-display-wrapper">
+                        <div class="cpf-display-label">CPF</div>
+                        <div class="cpf-display" id="cpfDisplay" role="status" aria-live="polite">
+                            <span class="cpf-placeholder">___.___.___-__</span>
+                        </div>
+                        <div class="cpf-helper-text" id="cpfHelperText">Digite os 11 dígitos do CPF</div>
+                        <div class="cpf-underline"></div>
+                        <button class="btn-toggle-visibility" id="btnToggleVisibility" type="button">
+                            <i class="fas fa-eye"></i>
+                            <span id="toggleText">Mostrar CPF</span>
+                        </button>
+                    </div>
+
+                    <!-- Teclado Numérico -->
+                    <div class="keypad" id="keypad">
+                        <button class="key" data-key="1" id="key-1">1</button>
+                        <button class="key" data-key="2" id="key-2">2</button>
+                        <button class="key" data-key="3" id="key-3">3</button>
+                        <button class="key" data-key="4" id="key-4">4</button>
+                        <button class="key" data-key="5" id="key-5">5</button>
+                        <button class="key" data-key="6" id="key-6">6</button>
+                        <button class="key" data-key="7" id="key-7">7</button>
+                        <button class="key" data-key="8" id="key-8">8</button>
+                        <button class="key" data-key="9" id="key-9">9</button>
+                        <button class="key key-action key-clear" data-key="clear" id="key-clear">
+                            <i class="fas fa-eraser"></i>
+                        </button>
+                        <button class="key" data-key="0" id="key-0">0</button>
+                        <button class="key key-action key-backspace" data-key="backspace" id="key-backspace">
+                            <i class="fas fa-delete-left"></i>
+                        </button>
+                    </div>
+
+                    <!-- Botão Verificar -->
+                    <button class="btn-verify" id="btnVerify" disabled>
+                        <span class="btn-verify-text">
+                            <i class="fas fa-shield-halved"></i>
+                            Verificar Acesso
+                        </span>
+                        <span class="btn-verify-loading hidden">
+                            <i class="fas fa-circle-notch fa-spin"></i>
+                            Consultando...
+                        </span>
+                    </button>
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <p>&copy; 2026 M&P Performance — Sistema de Controle de Acesso</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- ===== TELA DE RESULTADO ===== -->
+    <div id="screenResult" class="screen">
+        <div class="container result-container">
+            
+            <!-- Resultado: LIBERADO -->
+            <div id="resultLiberado" class="result-card hidden">
+                <div class="result-bg result-bg-liberado"></div>
+                <div class="result-content">
+                    <div class="result-icon-ring result-ring-liberado">
+                        <div class="result-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    <h2 class="result-status result-text-liberado">ACESSO LIBERADO</h2>
+                    <div class="result-user-info">
+                        <p class="result-name" id="resultNomeLiberado"></p>
+                        <p class="result-detail" id="resultDetailLiberado"></p>
+                    </div>
+                    <div class="result-message result-msg-liberado">
+                        <i class="fas fa-dumbbell"></i>
+                        <span>Bom treino!</span>
+                    </div>
+                </div>
+                <div class="result-countdown">
+                    <div class="countdown-bar countdown-bar-liberado" id="countdownLiberado"></div>
+                </div>
+            </div>
+
+            <!-- Resultado: BLOQUEADO -->
+            <div id="resultBloqueado" class="result-card hidden">
+                <div class="result-bg result-bg-bloqueado"></div>
+                <div class="result-content">
+                    <div class="result-icon-ring result-ring-bloqueado">
+                        <div class="result-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                    </div>
+                    <h2 class="result-status result-text-bloqueado">ACESSO BLOQUEADO</h2>
+                    <div class="result-user-info">
+                        <p class="result-name" id="resultNomeBloqueado"></p>
+                        <p class="result-detail" id="resultDetailBloqueado"></p>
+                    </div>
+                    <div class="result-message result-msg-bloqueado">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Procure a recepção</span>
+                    </div>
+                </div>
+                <div class="result-countdown">
+                    <div class="countdown-bar countdown-bar-bloqueado" id="countdownBloqueado"></div>
+                </div>
+            </div>
+
+            <!-- Resultado: INATIVO -->
+            <div id="resultInativo" class="result-card hidden">
+                <div class="result-bg result-bg-inativo"></div>
+                <div class="result-content">
+                    <div class="result-icon-ring result-ring-inativo">
+                        <div class="result-icon">
+                            <i class="fas fa-pause"></i>
+                        </div>
+                    </div>
+                    <h2 class="result-status result-text-inativo">PLANO INATIVO</h2>
+                    <div class="result-user-info">
+                        <p class="result-name" id="resultNomeInativo"></p>
+                        <p class="result-detail" id="resultDetailInativo"></p>
+                    </div>
+                    <div class="result-message result-msg-inativo">
+                        <i class="fas fa-rotate"></i>
+                        <span>Renove seu plano na recepção</span>
+                    </div>
+                </div>
+                <div class="result-countdown">
+                    <div class="countdown-bar countdown-bar-inativo" id="countdownInativo"></div>
+                </div>
+            </div>
+
+            <!-- Resultado: NÃO CADASTRADO -->
+            <div id="resultNaoCadastrado" class="result-card hidden">
+                <div class="result-bg result-bg-naocadastrado"></div>
+                <div class="result-content">
+                    <div class="result-icon-ring result-ring-naocadastrado">
+                        <div class="result-icon">
+                            <i class="fas fa-user-slash"></i>
+                        </div>
+                    </div>
+                    <h2 class="result-status result-text-naocadastrado">CPF NÃO CADASTRADO</h2>
+                    <div class="result-user-info">
+                        <p class="result-detail" id="resultDetailNaoCadastrado">Este CPF não foi encontrado em nosso sistema</p>
+                    </div>
+                    <div class="result-message result-msg-naocadastrado">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Procure a recepção para se cadastrar</span>
+                    </div>
+                </div>
+                <div class="result-countdown">
+                    <div class="countdown-bar countdown-bar-naocadastrado" id="countdownNaoCadastrado"></div>
+                </div>
+            </div>
+
+            <!-- Resultado: ERRO -->
+            <div id="resultErro" class="result-card hidden">
+                <div class="result-bg result-bg-erro"></div>
+                <div class="result-content">
+                    <div class="result-icon-ring result-ring-erro">
+                        <div class="result-icon">
+                            <i class="fas fa-wifi"></i>
+                        </div>
+                    </div>
+                    <h2 class="result-status result-text-erro">ERRO DE CONEXÃO</h2>
+                    <div class="result-user-info">
+                        <p class="result-detail" id="resultDetailErro">Não foi possível conectar ao servidor</p>
+                    </div>
+                    <div class="result-message result-msg-erro">
+                        <i class="fas fa-headset"></i>
+                        <span>Aguarde ou procure a recepção</span>
+                    </div>
+                </div>
+                <div class="result-countdown">
+                    <div class="countdown-bar countdown-bar-erro" id="countdownErro"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Prevent zoom on input focus (mobile)
+        document.addEventListener('DOMContentLoaded', function() {
+            const viewport = document.querySelector('meta[name=viewport]');
+            viewport.setAttribute('content', viewport.content + ', user-scalable=no');
+        });
+    </script>
+</body>
+</html>
